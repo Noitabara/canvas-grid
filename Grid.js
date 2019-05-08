@@ -1,5 +1,5 @@
 class CanvasGrid{
-    constructor(target, {width = 700, columns = 3, rows = 5, fontsize = 20} = {}){
+    constructor(target, {width = 800, columns = 4, rows = 20, fontsize = 20} = {}){
         this.columns = columns
         this.rows = rows
         this.fontsize = fontsize
@@ -12,6 +12,22 @@ class CanvasGrid{
         this.rowHeight = this.fontsize+2
         this.rowIndex = Array(this.rows - 1).fill().map((row, index) => this.rowHeight*(index + 1))
         this.drawGrid(this.ctx)
+
+        this.AZ = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
+        this.cellColumn = this.colIndex
+        this.cellRow = this.rowIndex
+        this.cellColumn.unshift(2)
+        this.cellRow.unshift(2)
+        this.cellTable = this.cellRow.map((row, rowIndex) => {
+            const ROI = rowIndex + 1
+            return this.cellColumn.map((col, colIndex) => {
+                return `${this.AZ[colIndex]}${ROI}: [${Math.round(col)}, ${(row-1)+fontsize}]`
+                // return {
+                //     cellName: `${this.AZ[colIndex]}${ROI}`,
+                //     position: [col, (row-1)+fontsize]
+                // }
+            })
+        })
     }
     createCanvas(target){
         this.canvas = document.createElement('canvas')
@@ -32,6 +48,9 @@ class CanvasGrid{
         })
         canvasCTX.strokeRect(0, 0, this.canvasWidth, this.canvasHeight)
         canvasCTX.stroke()
+    }
+    logCellTable(){
+        console.table(this.cellTable)
     }
 }
 

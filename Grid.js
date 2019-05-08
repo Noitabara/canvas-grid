@@ -1,5 +1,6 @@
 class CanvasGrid{
-    constructor(target, width = 700, columns = 3, rows = 5, fontsize = 20){
+    constructor(target, {width = 700, columns = 3, rows = 5, fontsize = 20} = {}){
+        
         this.columns = columns
         this.rows = rows
         this.fontsize = fontsize
@@ -35,4 +36,5 @@ class CanvasGrid{
     }
 }
 
-const test = new CanvasGrid(document.body)
+// const test = new CanvasGrid(document.body, {columns: 5})
+export { CanvasGrid }

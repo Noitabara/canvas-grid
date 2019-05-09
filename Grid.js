@@ -18,16 +18,18 @@ class CanvasGrid{
         this.cellRow = this.rowIndex
         this.cellColumn.unshift(2)
         this.cellRow.unshift(2)
-        this.cellTable = this.cellRow.map((row, rowIndex) => {
+        // !! Quick fix. Need to change.
+        this.cellTable = []
+        this.cellRow.map((row, rowIndex) => {
             const ROI = rowIndex + 1
             return this.cellColumn.map((col, colIndex) => {
-                return `${this.AZ[colIndex]}${ROI}: [${Math.round(col)}, ${(row-1)+fontsize}]`
-                // return {
-                //     cellName: `${this.AZ[colIndex]}${ROI}`,
-                //     position: [col, (row-1)+fontsize]
-                // }
+                // return `${this.AZ[colIndex]}${ROI}: [${Math.round(col)}, ${(row-1)+fontsize}]`
+                return {
+                    cellName: `${this.AZ[colIndex]}${ROI}`,
+                    position: [col+2, (row-2)+fontsize]
+                }
             })
-        })
+        }).forEach(cellData => this.cellTable.push.apply(this.cellTable, cellData))
     }
     createCanvas(target){
         this.canvas = document.createElement('canvas')
@@ -35,6 +37,7 @@ class CanvasGrid{
         this.canvas.setAttribute('width', this.canvasWidth)
         this.canvas.setAttribute('height', this.canvasHeight)
         this.ctx = this.canvas.getContext('2d')
+        this.ctx.font = `${this.fontsize}px Ariel`
         target.appendChild(this.canvas)
     }
     drawGrid(canvasCTX){
@@ -50,7 +53,12 @@ class CanvasGrid{
         canvasCTX.stroke()
     }
     logCellTable(){
-        console.table(this.cellTable)
+        // console.table()
+        console.log(JSON.stringify(this.cellTable))
+    }
+    writeData(cell = 'A1', data = 'Hello World'){
+        const [x, y] = this.cellTable.find(c => c.cellName == cell).position
+        this.ctx.fillText(data, x, y)
     }
 }
 
